@@ -8,11 +8,12 @@ const oauthInfoFile = path.join(process.cwd(), '../oauthInfo.json');
 
 const Koa = new koa();
 
-const clientId = config.client_id;
-const clientSecret = config.client_secret;
-const redirectUrl = config.redirect_url;
+const clientId = config.instagram.client_id;
+const clientSecret = config.instagram.client_secret;
+const redirectUrl = config.instagram.redirect_url;
 const instaReqCodeUrl = 'https://api.instagram.com/oauth/authorize/?client_id=' + clientId +
-												'&redirect_uri=' + redirectUrl + '&response_type=code';
+												'&redirect_uri=' + redirectUrl +
+												'&response_type=code&scope=public_content+likes+comments+follower_list+relationships';
 const instaReqTokenUrl = 'https://api.instagram.com/oauth/access_token';
 
 Koa.use(route.get('/', async (ctx, next) => {
