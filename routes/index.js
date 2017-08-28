@@ -6,6 +6,6 @@ const Koa = new koa();
 
 const authToInsta = require('./authToInsta');
 
-Koa.use(mount('/auth', authToInsta));
+Koa.use(mount('/insta/auth', authToInsta));
 
 module.exports = Koa;
