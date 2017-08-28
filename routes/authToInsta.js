@@ -1,8 +1,10 @@
 const route = require('koa-route');
 const koa = require('koa');
 const path = require('path');
+const fs = require('fs');
 const request = require('request');
 const config = require(path.join(process.cwd(), 'config/config'));
+const oauthInfoFile = path.join(process.cwd(), '../oauthInfo.json');
 
 const Koa = new koa();
 
@@ -28,6 +30,7 @@ Koa.use(route.get('/callback', async (ctx, next) => {
 	};
 
 	await getToken(requestForm).then(result => {
+		fs.writeFileSync(oauthInfoFile, result, 'utf8');
 		ctx.body = result;
 	}).catch(err => {
 		ctx.body = err;
