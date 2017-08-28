@@ -6,8 +6,11 @@ const config = require(path.join(process.cwd(), 'config/config'));
 
 const Koa = new koa();
 
-const instaReqCodeUrl = 'https://api.instagram.com/oauth/authorize/?client_id=' + config.client_id +
-												'&redirect_uri=' + config.redirect_url + '&response_type=code';
+const clientId = config.client_id;
+const clientSecret = config.client_secret;
+const redirectUrl = config.redirect_url;
+const instaReqCodeUrl = 'https://api.instagram.com/oauth/authorize/?client_id=' + clientId +
+												'&redirect_uri=' + redirectUrl + '&response_type=code';
 const instaReqTokenUrl = 'https://api.instagram.com/oauth/access_token';
 
 Koa.use(route.get('/', async (ctx, next) => {
@@ -17,10 +20,10 @@ Koa.use(route.get('/', async (ctx, next) => {
 Koa.use(route.get('/callback', async (ctx, next) => {
 	let code = ctx.query.code;
 	let requestForm = {
-		client_id: config.client_id,
-		client_secret: config.client_secret,
+		client_id: clientId,
+		client_secret: clientSecret,
 		grant_type: 'authorization_code',
-		redirect_uri: config.redirect_url,
+		redirect_uri: redirectUrl,
 		code: code
 	};
 
