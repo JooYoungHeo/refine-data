@@ -1,4 +1,3 @@
-const route = require('koa-route');
 const koa = require('Koa');
 const mount = require('koa-mount');
 
