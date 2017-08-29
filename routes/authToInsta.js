@@ -1,4 +1,4 @@
-const route = require('koa-route');
+const router = require('koa-router');
 const koa = require('koa');
 const path = require('path');
 const fs = require('fs');
@@ -7,6 +7,7 @@ const config = require(path.join(process.cwd(), 'config/config'));
 const oauthInfoFile = path.join(process.cwd(), '../oauthInfo.json');
 
 const Koa = new koa();
+const Router = new router();
 
 const clientId = config.instagram.client_id;
 const clientSecret = config.instagram.client_secret;
@@ -16,11 +17,11 @@ const instaReqCodeUrl = 'https://api.instagram.com/oauth/authorize/?client_id=' 
 												'&response_type=code&scope=public_content+likes+comments+follower_list+relationships';
 const instaReqTokenUrl = 'https://api.instagram.com/oauth/access_token';
 
-Koa.use(route.get('/', async (ctx, next) => {
+Router.get('/', async (ctx, next) => {
 	ctx.redirect(instaReqCodeUrl);
-}));
+});
 
-Koa.use(route.get('/callback', async (ctx, next) => {
+Router.get('/callback', async (ctx, next) => {
 	let code = ctx.query.code;
 	let requestForm = {
 		client_id: clientId,
@@ -37,7 +38,7 @@ Koa.use(route.get('/callback', async (ctx, next) => {
 		ctx.body = err;
 	});
 
-}));
+});
 
 function getToken(requestForm) {
 	return new Promise((resolve, reject) => {
@@ -50,5 +51,7 @@ function getToken(requestForm) {
 		});
 	});
 }
+
+Koa.use(Router.routes());
 
 module.exports = Koa;

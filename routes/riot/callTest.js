@@ -1,4 +1,4 @@
-const route = require('koa-route');
+const router = require('koa-router');
 const koa = require('koa');
 const fs = require('fs');
 const request = require('request');
@@ -6,9 +6,10 @@ const path = require('path');
 const config = require(path.join(process.cwd(), 'config/config'));
 
 const Koa = new koa();
+const Router = new router();
 const token = config.riot.key;
 
-Koa.use(route.get('/', async (ctx, next) => {
+Router.get('/', async (ctx, next) => {
   let summonorName = config.riot.name;
 
   await getRiotInfoByName(summonorName).then(result => {
@@ -17,7 +18,7 @@ Koa.use(route.get('/', async (ctx, next) => {
     ctx.body = err;
   });
 
-}));
+});
 
 function getRiotInfoByName(summonorName) {
   return new Promise((resolve, reject) => {
@@ -37,5 +38,7 @@ function getRiotInfoByName(summonorName) {
     });
   });
 }
+
+Koa.use(Router.routes());
 
 module.exports = Koa;
