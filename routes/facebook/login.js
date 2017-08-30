@@ -16,11 +16,8 @@ const requestCodeUrl = 'https://www.facebook.com/v2.10/dialog/oauth';
 const requestTokenUrl = 'https://graph.facebook.com/v2.10/oauth/access_token';
 
 Router.get('/login', async (ctx, next) => {
-
-  let customCodeUrl = requestCodeUrl + '?client_id=' + appId + '&redirect_uri=' + redirectUri;
-
+  let customCodeUrl = `${requestCodeUrl}?client_id=${appId}&redirect_uri=${redirectUri}`;
   ctx.redirect(customCodeUrl);
-
 });
 
 Router.get('/callback', async (ctx, next) => {

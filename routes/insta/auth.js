@@ -11,13 +11,13 @@ const Router = new router();
 const clientId = config.instagram.client_id;
 const clientSecret = config.instagram.client_secret;
 const redirectUrl = config.instagram.redirect_url;
-const instaReqCodeUrl = 'https://api.instagram.com/oauth/authorize/?client_id=' + clientId +
-												'&redirect_uri=' + redirectUrl +
-												'&response_type=code&scope=public_content+likes+comments+follower_list+relationships';
+const instaReqCodeUrl = 'https://api.instagram.com/oauth/authorize/';
 const instaReqTokenUrl = 'https://api.instagram.com/oauth/access_token';
 
 Router.get('/', async (ctx, next) => {
-	ctx.redirect(instaReqCodeUrl);
+	let customCodeUrl = `${instaReqCodeUrl}?client_id=${clientId}&redirect_uri=${redirectUrl}` +
+												`&response_type=code&scope=public_content+likes+comments+follower_list+relationships`;
+	ctx.redirect(customCodeUrl);
 });
 
 Router.get('/callback', async (ctx, next) => {

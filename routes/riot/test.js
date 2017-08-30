@@ -23,7 +23,7 @@ Router.get('/', async (ctx, next) => {
 function getRiotInfoByName(summonorName) {
   return new Promise((resolve, reject) => {
     let options = {
-      url: 'https://kr.api.riotgames.com/lol/summoner/v3/summoners/by-name/' + summonorName,
+      url: `https://kr.api.riotgames.com/lol/summoner/v3/summoners/by-name/${summonorName}`,
       headers: {
         'X-Riot-Token': token,
       }
