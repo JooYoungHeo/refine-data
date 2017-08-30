@@ -1,9 +1,10 @@
 const koa = require('koa');
 const router = require('koa-router');
 const path = require('path');
-const request = require('request');
-const util = require(path.join(process.cwd(), 'util'));
-const config = require(path.join(process.cwd(), 'config/config'));
+
+const cwd = process.cwd();
+const util = require(path.join(cwd, 'util'));
+const config = require(path.join(cwd, 'config/config'));
 
 const Koa = new koa();
 const Router = new router();
@@ -30,25 +31,18 @@ Router.get('/callback', async (ctx, next) => {
     code: code
   };
   let requestObject = {
+    method: 'GET',
     url: requestTokenUrl,
     qs: queryString
   };
 
-  await doRequest(requestObject).then(result => {
+  await util.requestOriginApi(requestObject).then(result => {
     util.writeJsonFile({facebook: result});
     ctx.body = result;
   }).catch(err => {
     ctx.body = err;
   });
 });
-
-function doRequest(requestObject) {
-  return new Promise((resolve, reject) => {
-    request.get(requestObject, (err, httpResponse, body) => {
-      err? reject(err): resolve(body);
-    });
-  });
-}
 
 Koa.use(Router.routes());
 

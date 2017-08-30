@@ -1,9 +1,10 @@
 const router = require('koa-router');
 const koa = require('koa');
 const path = require('path');
-const request = require('request');
-const config = require(path.join(process.cwd(), 'config/config'));
-const util = require(path.join(process.cwd(), 'util'));
+
+const cwd = process.cwd();
+const config = require(path.join(cwd, 'config/config'));
+const util = require(path.join(cwd, 'util'));
 
 const Koa = new koa();
 const Router = new router();
@@ -29,8 +30,13 @@ Router.get('/callback', async (ctx, next) => {
 		redirect_uri: redirectUrl,
 		code: code
 	};
+	let requestObject = {
+		method: 'POST',
+		url: instaReqTokenUrl,
+		formData: requestForm
+	};
 
-	await getToken(requestForm).then(result => {
+	await util.requestOriginApi(requestObject).then(result => {
 		util.writeJsonFile({instagram: result});
 		ctx.body = result;
 	}).catch(err => {
@@ -38,18 +44,6 @@ Router.get('/callback', async (ctx, next) => {
 	});
 
 });
-
-function getToken(requestForm) {
-	return new Promise((resolve, reject) => {
-		request.post({url: instaReqTokenUrl, formData: requestForm}, (err, httpResponse, body) => {
-			if(!err) {
-				resolve(body);
-			} else {
-				reject(err);
-			}
-		});
-	});
-}
 
 Koa.use(Router.routes());
 
