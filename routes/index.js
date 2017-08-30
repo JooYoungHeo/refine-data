@@ -6,9 +6,11 @@ const Koa = new koa();
 const authToInsta = require('./authToInsta');
 const riot = require('./riot');
 const routerTest = require('./routerTest');
+const facebook = require('./facebook');
 
 Koa.use(mount('/insta/auth', authToInsta));
 Koa.use(mount('/riot', riot));
 Koa.use(mount('/test', routerTest));
+Koa.use(mount('/facebook', facebook));
 
 module.exports = Koa;
