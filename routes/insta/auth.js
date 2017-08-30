@@ -1,10 +1,9 @@
 const router = require('koa-router');
 const koa = require('koa');
 const path = require('path');
-const fs = require('fs');
 const request = require('request');
 const config = require(path.join(process.cwd(), 'config/config'));
-const oauthInfoFile = path.join(process.cwd(), '../oauthInfo.json');
+const util = require(path.join(process.cwd(), 'util'));
 
 const Koa = new koa();
 const Router = new router();
@@ -32,7 +31,7 @@ Router.get('/callback', async (ctx, next) => {
 	};
 
 	await getToken(requestForm).then(result => {
-		fs.writeFileSync(oauthInfoFile, result, 'utf8');
+		util.writeJsonFile({instagram: result});
 		ctx.body = result;
 	}).catch(err => {
 		ctx.body = err;
