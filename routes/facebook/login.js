@@ -2,6 +2,7 @@ const koa = require('koa');
 const router = require('koa-router');
 const path = require('path');
 const request = require('request');
+const writeJsonFile = require(path.join(process.cwd(), 'util/writeJsonFile'));
 const config = require(path.join(process.cwd(), 'config/config'));
 
 const Koa = new koa();
@@ -37,6 +38,7 @@ Router.get('/callback', async (ctx, next) => {
   };
 
   await doRequest(requestObject).then(result => {
+    writeJsonFile({facebook: result});
     ctx.body = result;
   }).catch(err => {
     ctx.body = err;

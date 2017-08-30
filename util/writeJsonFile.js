@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
 
-const file = path.join(process.cwd(), '../../oauthInfo.json');
+const file = path.join(process.cwd(), '../oauthInfo.json');
 
 function doWriteJson(additionalInfo) {
 
@@ -26,4 +26,4 @@ function doWriteJson(additionalInfo) {
 
 }
 
-doWriteJson({riot: {token: 'ooooooo'}});
+module.exports = doWriteJson;
