@@ -1,10 +1,9 @@
 const koa = require('Koa');
 const mount = require('koa-mount');
+const test = require('./test');
 
 const Koa = new koa();
 
-const callTest = require('./callTest');
-
-Koa.use(mount('/callTest', callTest));
+Koa.use(mount('/test', test));
 
 module.exports = Koa;

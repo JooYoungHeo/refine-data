@@ -13,7 +13,7 @@ Router.get('/', async (ctx, next) => {
   let summonorName = config.riot.name;
 
   await getRiotInfoByName(summonorName).then(result => {
-    ctx.body = result;
+    ctx.body = 'ok';
   }).catch(err => {
     ctx.body = err;
   });
