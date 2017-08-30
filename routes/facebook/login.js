@@ -3,7 +3,7 @@ const router = require('koa-router');
 const path = require('path');
 
 const cwd = process.cwd();
-const util = require(path.join(cwd, 'util'));
+const {requestOriginApi, writeJsonFile} = require(path.join(cwd, 'util'));
 const config = require(path.join(cwd, 'config/config'));
 
 const Koa = new koa();
@@ -36,8 +36,8 @@ Router.get('/callback', async (ctx, next) => {
     qs: queryString
   };
 
-  await util.requestOriginApi(requestObject).then(result => {
-    util.writeJsonFile({facebook: result});
+  await requestOriginApi(requestObject).then(result => {
+    writeJsonFile({facebook: result});
     ctx.body = result;
   }).catch(err => {
     ctx.body = err;

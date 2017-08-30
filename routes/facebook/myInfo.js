@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 
 const cwd = process.cwd();
-const util = require(path.join(cwd, 'util'));
+const {requestOriginApi} = require(path.join(cwd, 'util'));
 const config = require(path.join(cwd, 'config/config'));
 const infoFile = path.join(cwd, '../oauthInfo.json');
 const facebookInfo = JSON.parse((JSON.parse(fs.readFileSync(infoFile))).facebook);
@@ -22,7 +22,7 @@ Router.get('/', async (ctx, next) => {
     }
   };
 
-  await util.requestOriginApi(requestObject).then(result => {
+  await requestOriginApi(requestObject).then(result => {
     ctx.body = result;
   }).catch(err => {
     ctx.body = err;

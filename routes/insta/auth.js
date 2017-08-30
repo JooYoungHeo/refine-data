@@ -4,7 +4,7 @@ const path = require('path');
 
 const cwd = process.cwd();
 const config = require(path.join(cwd, 'config/config'));
-const util = require(path.join(cwd, 'util'));
+const {requestOriginApi, writeJsonFile} = require(path.join(cwd, 'util'));
 
 const Koa = new koa();
 const Router = new router();
@@ -36,8 +36,8 @@ Router.get('/callback', async (ctx, next) => {
 		formData: requestForm
 	};
 
-	await util.requestOriginApi(requestObject).then(result => {
-		util.writeJsonFile({instagram: result});
+	await requestOriginApi(requestObject).then(result => {
+		writeJsonFile({instagram: result});
 		ctx.body = result;
 	}).catch(err => {
 		ctx.body = err;

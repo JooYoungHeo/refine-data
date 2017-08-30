@@ -5,7 +5,7 @@ const request = require('request');
 const path = require('path');
 
 const cwd = process.cwd();
-const util = require(path.join(cwd, 'util'));
+const {requestOriginApi} = require(path.join(cwd, 'util'));
 const config = require(path.join(cwd, 'config/config'));
 
 const Koa = new koa();
@@ -22,7 +22,7 @@ Router.get('/', async (ctx, next) => {
     }
   };
 
-  await util.requestOriginApi(requestObject).then(result => {
+  await requestOriginApi(requestObject).then(result => {
     ctx.body = 'ok';
   }).catch(err => {
     ctx.body = err;
