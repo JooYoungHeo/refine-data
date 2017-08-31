@@ -17,7 +17,11 @@ const requestCodeUrl = 'https://www.facebook.com/v2.10/dialog/oauth';
 const requestTokenUrl = 'https://graph.facebook.com/v2.10/oauth/access_token';
 
 Router.get('/login', async (ctx, next) => {
-  let customCodeUrl = `${requestCodeUrl}?client_id=${appId}&redirect_uri=${redirectUri}`;
+
+  let scopeList = ['public_profile', 'user_friends', 'email', 'user_likes', 'user_photos'];
+  let scope = convertListToString(scopeList);
+  let customCodeUrl = `${requestCodeUrl}?client_id=${appId}&redirect_uri=${redirectUri}` +
+                        `&scope=${scope}`;
   ctx.redirect(customCodeUrl);
 });
 
@@ -43,6 +47,18 @@ Router.get('/callback', async (ctx, next) => {
     ctx.body = err;
   });
 });
+
+function convertListToString(list) {
+
+  let convertString = '';
+
+  for(let i = 0 ; i < list.length ; i++) {
+    let item = list[i];
+    convertString += (i === list.length - 1)? item: item + ',';
+  }
+
+  return convertString;
+}
 
 Koa.use(Router.routes());
 
