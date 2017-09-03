@@ -8,9 +8,6 @@ const Router = new router();
 
 let {Sports} = require(path.join(process.cwd(), 'models'));
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/test', {useMongoClient: true});
-
 Router.get('/', async (ctx, next) => {
   await findSports().then(result => {
     ctx.body = result;
