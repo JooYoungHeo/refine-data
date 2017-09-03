@@ -6,7 +6,7 @@ const path = require('path');
 const Koa = new koa();
 const Router = new router();
 
-let Sports = require(path.join(process.cwd(), 'models/sports'));
+let {Sports} = require(path.join(process.cwd(), 'models'));
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/test', {useMongoClient: true});
