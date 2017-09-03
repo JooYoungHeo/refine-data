@@ -11,4 +11,4 @@ let sportsSchema = new Schema({
   category: String
 });
 
-module.exports = mongoose.model('sports', sportsSchema);
+module.exports = mongoose.model('Sports', sportsSchema);
