@@ -28,31 +28,34 @@ let requestObject = {
   }
 };
 
-requestOriginApi(requestObject).then(result => {
-  let jsonResult = JSON.parse(result);
-  let docs = jsonResult.documents;
+cron.schedule('0 */1 * * *', () => {
+  requestOriginApi(requestObject).then(result => {
+    let jsonResult = JSON.parse(result);
+    let docs = jsonResult.documents;
 
-  for (let i = 0 ; i < docs.length ; i++) {
-    let doc = docs[i];
-    let item = new Sports();
+    console.log('json result: ' + docs.length);
 
-    item.cafename = doc.cafename;
-    item.contents = doc.contents;
-    item.datetime = doc.datetime;
-    item.thumbnail = doc.thumbnail;
-    item.title = doc.title;
-    item.url = doc.url;
-    item.category = query;
+    for (let i = 0 ; i < docs.length ; i++) {
+      let doc = docs[i];
+      let item = new Sports();
 
-    item.save(err => {
-      if(err) console.error(err);
-    });
-  }
+      item._id = doc.url;
+      item.cafename = doc.cafename;
+      item.contents = doc.contents;
+      item.datetime = doc.datetime;
+      item.thumbnail = doc.thumbnail;
+      item.title = doc.title;
+      item.url = doc.url;
+      item.category = query;
 
-}).catch(err => {
-  console.error(err);
-});
+      item.save(err => {
+        if(err) {
+          console.log('duplicate url: ' + doc.url);
+        }
+      });
+    }
 
-// cron.schedule('0 */1 * * *', () => {
-//
-// }).start();
+  }).catch(err => {
+    console.error(err);
+  });
+}).start();
