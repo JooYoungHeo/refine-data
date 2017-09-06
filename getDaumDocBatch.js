@@ -28,7 +28,9 @@ let requestObject = {
   }
 };
 
-cron.schedule('0 */1 * * *', () => {
+cron.schedule('35 */1 * * *', () => {
+  let date = new Date();
+
   requestOriginApi(requestObject).then(result => {
     let jsonResult = JSON.parse(result);
     let docs = jsonResult.documents;
@@ -50,6 +52,7 @@ cron.schedule('0 */1 * * *', () => {
 
       item.save(err => {
         if(err) {
+          console.log(date.toLocaleString());
           console.log('duplicate url: ' + doc.url);
         }
       });
