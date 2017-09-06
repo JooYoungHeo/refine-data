@@ -34,6 +34,33 @@ function findSports(skip) {
   });
 }
 
+Router.get('/cafes', async (ctx, next) => {
+  await findCafes().then(result => {
+    ctx.body = result;
+  }).catch(err => {
+    ctx.body = err;
+  });
+});
+
+function findCafes() {
+  return new Promise((resolve, reject) => {
+    Sports.aggregate([{
+      $group: {
+        _id: "$cafename",
+        count: {
+          $sum: 1
+        }
+      }
+    },{
+      $sort: {
+        count: -1
+      }
+    }]).exec((err, item) => {
+      err? reject(err): resolve(item);
+    });
+  });
+}
+
 Koa.use(Router.routes());
 
 module.exports = Koa;
