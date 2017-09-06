@@ -11,8 +11,9 @@ let {Sports} = require(path.join(process.cwd(), 'models'));
 
 Router.get('/', async (ctx, next) => {
   let skip = ctx.query.page;
+  let convertSkip = Number(skip);
 
-  if (_.isNil(skip) || typeof Number(skip) !== 'number') {
+  if (_.isNil(skip) || typeof convertSkip !== 'number' || convertSkip === 0) {
     skip = 1;
   }
 
