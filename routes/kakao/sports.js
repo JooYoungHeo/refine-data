@@ -35,16 +35,19 @@ function findSports(skip) {
 }
 
 Router.get('/cafes', async (ctx, next) => {
-  await findCafes().then(result => {
+  let limit = Number(ctx.query.limit);
+  let limitNumber = (_.isNaN(limit) || limit === 0)? null: limit;
+
+  await findCafes(limitNumber).then(result => {
     ctx.body = result;
   }).catch(err => {
     ctx.body = err;
   });
 });
 
-function findCafes() {
+function findCafes(limit) {
   return new Promise((resolve, reject) => {
-    Sports.aggregate([{
+    let aggregateOption = [{
       $group: {
         _id: "$cafename",
         count: {
@@ -55,7 +58,11 @@ function findCafes() {
       $sort: {
         count: -1
       }
-    }]).exec((err, item) => {
+    }];
+
+    if(limit !== null) aggregateOption.push({$limit: limit});
+
+    Sports.aggregate(aggregateOption).exec((err, item) => {
       err? reject(err): resolve(item);
     });
   });
