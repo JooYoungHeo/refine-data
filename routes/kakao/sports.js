@@ -10,14 +10,8 @@ const Router = new router();
 let {Sports} = require(path.join(process.cwd(), 'models'));
 
 Router.get('/', async (ctx, next) => {
-  let skip = ctx.query.page;
-  let convertSkip = Number(skip);
-
-  if (_.isNil(skip) || typeof convertSkip !== 'number' || convertSkip === 0) {
-    skip = 1;
-  }
-
-  let skipNumber = (skip - 1) * 10;
+  let skip = Number(ctx.query.page);
+  let skipNumber = (_.isNaN(skip) || skip === 0)? 0: (skip - 1)*10;
 
   await findSports(skipNumber).then(result => {
     ctx.body = result;
