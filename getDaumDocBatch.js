@@ -12,6 +12,8 @@ let {Sports} = require(path.join(cwd, 'models'));
 let sportsList = (fs.readFileSync(path.join(cwd, '../sports.txt'), 'utf-8')).split('\n');
 let apiKey = config.kakao.apiKey;
 
+sportsList.splice(-1, 1);
+
 cron.schedule('35 */1 * * *', () => {
   let date = new Date();
 
