@@ -32,18 +32,29 @@ Router.get('/cafes', async (ctx, next) => {
   let limit = Number(ctx.query.limit);
   let limitNumber = (_.isNaN(limit) || limit === 0)? null: limit;
 
-  await findCafes(limitNumber).then(result => {
+  await findSportsByGroup(limitNumber, 'cafename').then(result => {
     ctx.body = result;
   }).catch(err => {
     ctx.body = err;
   });
 });
 
-function findCafes(limit) {
+Router.get('/categories', async (ctx, next) => {
+  let limit = Number(ctx.query.limit);
+  let limitNumber = (_.isNaN(limit) || limit === 0)? null: limit;
+
+  await findSportsByGroup(limitNumber, 'category').then(result => {
+    ctx.body = result;
+  }).catch(err => {
+    ctx.body = err;
+  });
+});
+
+function findSportsByGroup(limit, groupName) {
   return new Promise((resolve, reject) => {
     let aggregateOption = [{
       $group: {
-        _id: "$cafename",
+        _id: `$${groupName}`,
         count: {
           $sum: 1
         }
